@@ -1,21 +1,16 @@
 from __future__ import annotations
 
-import pandas as pd
 from dash import Dash  # type: ignore
 
 from src.dashboard.layout import create_layout
+from src.utils.clean_data import load_clean_data
 
 
 def create_app() -> Dash:
-    df = pd.DataFrame(
-        {
-            "mois": ["Jan", "Fev", "Mar", "Avr", "Mai", "Jun"],
-            "accidents": [120, 98, 135, 110, 143, 126],
-        }
-    )
+    dataframe = load_clean_data()
 
     app = Dash(__name__)
     app.title = "Dashboard"
-    app.layout = create_layout(df)
+    app.layout = create_layout(dataframe)
     return app
 
