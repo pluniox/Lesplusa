@@ -1,49 +1,78 @@
 from __future__ import annotations
 
 import pandas as pd
-import plotly.express as px
 from dash import dcc, html  # type: ignore
 
 
-def create_layout(dataframe: pd.DataFrame) -> html.Div:
-    total = len(dataframe)
-    counts = dataframe["severity_label"].value_counts().reset_index()
-    counts.columns = ["severity_label", "accidents"]
-
-    fig = px.bar(
-        counts,
-        x="severity_label",
-        y="accidents",
-        title="Accidents par gravité (échantillon)",
+def _kpi_card(id_value: str, label_text: str) -> html.Div:
+    return html.Div(
+        className="kpi-card",
+        children=[
+            html.Div(label_text, className="kpi-label"),
+            html.Div("0", id=id_value, className="kpi-value"),
+        ],
     )
 
+
+def create_layout(dataframe: pd.DataFrame) -> html.Div:
+    severities = sorted(dataframe["severity_label"].dropna().unique())
+    default_sev = [s for s in severities if s != "Indemne"] or severities
+
     return html.Div(
-        style={"maxWidth": "1100px", "margin": "32px auto", "fontFamily": "Arial"},
+        className="container",
         children=[
-            html.H1("ACCIDENTS ROUTIERS"),
             html.Div(
-                style={
-                    "display": "flex",
-                    "gap": "12px",
-                    "marginTop": "16px",
-                    "marginBottom": "12px",
-                },
+                className="header",
                 children=[
-                    html.Div(
-                        style={
-                            "padding": "12px 16px",
-                            "border": "1px solid #ddd",
-                            "borderRadius": "10px",
-                            "minWidth": "200px",
-                        },
-                        children=[
-                            html.Div("TOTAL ACCIDENTS", style={"fontSize": "12px", "color": "#555"}),
-                            html.Div(str(total), style={"fontSize": "28px", "fontWeight": "bold"}),
-                        ],
-                    )
+                    html.H1("ACCIDENTS ROUTIERS"),
+                    html.P("Étape 06 : KPI + filtres + callbacks."),
                 ],
             ),
-            dcc.Graph(figure=fig),
+            html.Div(
+                className="kpi-grid",
+                children=[
+                    _kpi_card("kpi-total-val", "TOTAL"),
+                    _kpi_card("kpi-killed-val", "DÉCÈS"),
+                ],
+            ),
+            html.Div(
+                className="controls",
+                children=[
+                    html.Div(
+                        className="control",
+                        children=[
+                            html.Label("PÉRIODE"),
+                            dcc.DatePickerRange(
+                                id="date-range",
+                                min_date_allowed="2022-01-01",
+                                max_date_allowed="2022-12-31",
+                                start_date="2022-01-01",
+                                end_date="2022-12-31",
+                                display_format="DD/MM/YYYY",
+                            ),
+                        ],
+                    ),
+                    html.Div(
+                        className="control",
+                        children=[
+                            html.Label("GRAVITÉ"),
+                            dcc.Dropdown(
+                                id="severity-filter",
+                                options=[{"label": label, "value": label} for label in severities],
+                                value=default_sev,
+                                multi=True,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+            html.Div(
+                className="charts-grid",
+                children=[
+                    html.Div(dcc.Graph(id="severity-graph"), className="chart-card"),
+                    html.Div(dcc.Graph(id="hourly-graph"), className="chart-card"),
+                ],
+            ),
         ],
     )
 
