@@ -22,55 +22,84 @@ def create_layout(dataframe: pd.DataFrame) -> html.Div:
         className="container",
         children=[
             html.Div(
-                className="header",
+                className="header-container",
                 children=[
-                    html.H1("ACCIDENTS ROUTIERS"),
-                    html.P("Étape 06 : KPI + filtres + callbacks."),
+                    html.Div(
+                        className="app-title",
+                        children=[
+                            html.H1("ACCIDENTS ROUTIERS"),
+                            html.P(
+                                "Étape 07 : + charts (map/pie) avant la version finale.",
+                                className="app-subtitle",
+                            ),
+                        ],
+                    )
                 ],
             ),
             html.Div(
                 className="kpi-grid",
                 children=[
-                    _kpi_card("kpi-total-val", "TOTAL"),
+                    _kpi_card("kpi-total-val", "TOTAL ACCIDENTS"),
                     _kpi_card("kpi-killed-val", "DÉCÈS"),
+                    _kpi_card("kpi-injured-val", "BLESSÉS"),
                 ],
             ),
             html.Div(
-                className="controls",
+                className="controls-panel",
                 children=[
                     html.Div(
-                        className="control",
+                        className="controls-grid",
                         children=[
-                            html.Label("PÉRIODE"),
-                            dcc.DatePickerRange(
-                                id="date-range",
-                                min_date_allowed="2022-01-01",
-                                max_date_allowed="2022-12-31",
-                                start_date="2022-01-01",
-                                end_date="2022-12-31",
-                                display_format="DD/MM/YYYY",
+                            html.Div(
+                                [
+                                    html.Label("PÉRIODE"),
+                                    dcc.DatePickerRange(
+                                        id="date-range",
+                                        min_date_allowed="2022-01-01",
+                                        max_date_allowed="2022-12-31",
+                                        initial_visible_month="2022-01-01",
+                                        start_date="2022-01-01",
+                                        end_date="2022-12-31",
+                                        display_format="DD/MM/YYYY",
+                                    ),
+                                ],
+                                className="control-item",
+                            ),
+                            html.Div(
+                                [
+                                    html.Label("GRAVITÉ"),
+                                    dcc.Dropdown(
+                                        id="severity-filter",
+                                        options=[{"label": label, "value": label} for label in severities],
+                                        value=default_sev,
+                                        multi=True,
+                                    ),
+                                ],
+                                className="control-item",
                             ),
                         ],
-                    ),
-                    html.Div(
-                        className="control",
-                        children=[
-                            html.Label("GRAVITÉ"),
-                            dcc.Dropdown(
-                                id="severity-filter",
-                                options=[{"label": label, "value": label} for label in severities],
-                                value=default_sev,
-                                multi=True,
-                            ),
-                        ],
-                    ),
+                    )
                 ],
             ),
             html.Div(
                 className="charts-grid",
                 children=[
-                    html.Div(dcc.Graph(id="severity-graph"), className="chart-card"),
-                    html.Div(dcc.Graph(id="hourly-graph"), className="chart-card"),
+                    html.Div(
+                        dcc.Graph(id="density-map", config={"displayModeBar": False}),
+                        className="chart-card",
+                    ),
+                    html.Div(
+                        dcc.Graph(id="kpi-pie", config={"displayModeBar": False}),
+                        className="chart-card",
+                    ),
+                    html.Div(
+                        dcc.Graph(id="severity-graph", config={"displayModeBar": False}),
+                        className="chart-card",
+                    ),
+                    html.Div(
+                        dcc.Graph(id="hourly-graph", config={"displayModeBar": False}),
+                        className="chart-card",
+                    ),
                 ],
             ),
         ],
