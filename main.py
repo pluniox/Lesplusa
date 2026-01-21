@@ -4,7 +4,7 @@ from src.app import create_app
 
 def main() -> None:
     app = create_app()
-    app.run_server(debug=False, host="0.0.0.0", port=8050)
+    app.run(debug=False, host="0.0.0.0", port=8050)
 
 
 if __name__ == "__main__":
