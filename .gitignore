@@ -1,7 +1,7 @@
 __pycache__/
 .venv/
 venv/
+progression_git/
 *.pyc
 *.pyo
 *.DS_Store
-

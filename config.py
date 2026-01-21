@@ -1,3 +1,4 @@
+"""Global configuration for the road safety dashboard project."""
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -65,4 +66,3 @@ LIGHT_MAPPING = {
     4: "Nuit avec eclairage public non allume",
     5: "Nuit avec eclairage public allume",
 }
-

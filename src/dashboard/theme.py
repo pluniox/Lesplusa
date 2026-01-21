@@ -12,10 +12,13 @@ THEME: dict[str, Any] = {
     "grid_color": "rgba(255,255,255,0.06)",
     "neon_colors": ["#4DA3FF", "#A855F7", "#06B6D4", "#F43F5E", "#22C55E", "#FBBF24"],
     "font_family": "Inter, sans-serif",
+    "hover_bg": "#0b1220",
+    "hover_border": "#4DA3FF",
 }
 
 
 def apply_polish(fig: go.Figure) -> go.Figure:
+    """Applies consistent styling across all figures."""
     fig.update_layout(
         template=THEME["template"],
         paper_bgcolor=THEME["bg_color"],
@@ -24,7 +27,20 @@ def apply_polish(fig: go.Figure) -> go.Figure:
         margin={"t": 46, "l": 12, "r": 12, "b": 10},
         title={"x": 0.02, "xanchor": "left"},
         title_font={"size": 16, "family": THEME["font_family"]},
+        legend={
+            "bgcolor": "rgba(0,0,0,0)",
+            "bordercolor": "rgba(255,255,255,0.08)",
+            "borderwidth": 0,
+            "font": {"color": THEME["muted_text"], "family": THEME["font_family"], "size": 11},
+        },
+        hoverlabel={
+            "bgcolor": THEME["hover_bg"],
+            "bordercolor": THEME["hover_border"],
+            "font_family": THEME["font_family"],
+            "font_color": THEME["text_color"],
+        },
     )
+
     fig.update_xaxes(
         showgrid=False,
         gridcolor=THEME["grid_color"],
@@ -32,6 +48,7 @@ def apply_polish(fig: go.Figure) -> go.Figure:
         showline=False,
         ticks="",
         tickfont={"color": THEME["muted_text"], "family": THEME["font_family"]},
+        titlefont={"color": THEME["muted_text"], "family": THEME["font_family"]},
     )
     fig.update_yaxes(
         showgrid=True,
@@ -40,6 +57,6 @@ def apply_polish(fig: go.Figure) -> go.Figure:
         showline=False,
         ticks="",
         tickfont={"color": THEME["muted_text"], "family": THEME["font_family"]},
+        titlefont={"color": THEME["muted_text"], "family": THEME["font_family"]},
     )
     return fig
-

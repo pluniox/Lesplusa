@@ -1,3 +1,5 @@
+"""Dash application factory (wires layout + callbacks)."""
+
 from __future__ import annotations
 
 from dash import Dash  # type: ignore
@@ -11,8 +13,7 @@ def create_app() -> Dash:
     dataframe = load_clean_data()
 
     app = Dash(__name__, suppress_callback_exceptions=True)
-    app.title = "Dashboard"
+    app.title = "Fracklie - Dashboard"
     app.layout = create_layout(dataframe)
     register_callbacks(app, dataframe)
     return app
-

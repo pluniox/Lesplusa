@@ -36,4 +36,3 @@ def download_data(force: bool = False) -> Dict[str, Path]:
 
 if __name__ == "__main__":
     download_data(force=False)
-
