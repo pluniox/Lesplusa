@@ -48,7 +48,7 @@ def apply_polish(fig: go.Figure) -> go.Figure:
         showline=False,
         ticks="",
         tickfont={"color": THEME["muted_text"], "family": THEME["font_family"]},
-        titlefont={"color": THEME["muted_text"], "family": THEME["font_family"]},
+        title_font={"color": THEME["muted_text"], "family": THEME["font_family"]},
     )
     fig.update_yaxes(
         showgrid=True,
@@ -57,6 +57,6 @@ def apply_polish(fig: go.Figure) -> go.Figure:
         showline=False,
         ticks="",
         tickfont={"color": THEME["muted_text"], "family": THEME["font_family"]},
-        titlefont={"color": THEME["muted_text"], "family": THEME["font_family"]},
+        title_font={"color": THEME["muted_text"], "family": THEME["font_family"]},
     )
     return fig
